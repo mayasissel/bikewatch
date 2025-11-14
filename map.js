@@ -87,6 +87,11 @@ map.on('load', async () => {
     return station;
   });
 
+  const radiusScale = d3
+    .scaleSqrt()
+    .domain([0, d3.max(stations, (d) => d.totalTraffic)])
+    .range([0, 25]);
+
   const svg = d3.select('#map').select('svg');
 
   // Append circles to the SVG for each station
@@ -95,11 +100,19 @@ map.on('load', async () => {
     .data(stations)
     .enter()
     .append('circle')
-    .attr('r', 5) // Radius of the circle
+    .attr('r', d => radiusScale(d.totalTraffic))
     .attr('fill', 'steelblue') // Circle fill color
     .attr('stroke', 'white') // Circle border color
     .attr('stroke-width', 1) // Circle border thickness
-    .attr('opacity', 0.8); // Circle opacity
+    .attr('fill-opacity', 0.6)
+    .attr('pointer-events', 'auto')
+    .each(function (d) {
+        d3.select(this)
+        .append('title')
+        .text(
+            `${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`
+        );
+    });
 
   // Function to update circle positions when the map moves/zooms
   function updatePositions() {
