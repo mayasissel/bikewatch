@@ -1,7 +1,7 @@
 html,
 body {
   margin: 0;
-  padding: 5;
+  padding: 5px;
   height: 100%;
   width: 100%;
   display: flex;
@@ -11,9 +11,10 @@ body {
 
 #map {
   width: 100%; /* Adjust width to your desired size */
-  height: 100%; /* Adjust height to your desired size */
+  height: calc(100% - 140px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow for effect */
   border-radius: 8px; /* Optional: rounded corners */
+  position: relative;
 }
 
 #map svg {
@@ -25,5 +26,44 @@ body {
 }
 
 #map svg circle {
-    pointer-events: auto;
+  pointer-events: auto;
+  fill: var(--color);
+}
+
+:root {
+  --color-departures: #e63946; /* red-ish */
+  --color-arrivals: #457b9d;   /* blue-ish */
+  --color: color-mix(
+    in srgb,
+    var(--color-departures) calc(var(--departure-ratio) * 100%),
+    var(--color-arrivals)
+  );
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-block: 1rem;
+}
+
+.legend::before {
+  content: "Legend:";
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.legend > div {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.legend > div::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  background: var(--color);
+  border-radius: 4px;
 }
