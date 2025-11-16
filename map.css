@@ -1,6 +1,6 @@
 #map svg circle, .legend > div {
-  --color-departures: #e63946; /* red-ish */
-  --color-arrivals: #457b9d;   /* blue-ish */
+  --color-departures: #ff5e8e; /* red-ish */
+  --color-arrivals: #9bb3ff;   /* blue-ish */
   --color: color-mix(
     in srgb,
     var(--color-departures) calc(var(--departure-ratio) * 100%),
@@ -37,13 +37,6 @@ body {
 
 #map svg circle {
   pointer-events: auto;
-  /* --color-departures: steelblue;
-  --color-arrivals: darkorange;
-  --color: color-mix(
-    in oklch,
-    var(--color-departures) calc(100% * var(--departure-ratio)),
-    var(--color-arrivals)
-  ); */
   fill: var(--color);
 }
 
