@@ -100,10 +100,6 @@ map.on('load', async () => {
     // Await JSON fetch
     jsonData = await d3.json(jsonurl);
     console.log('Loaded JSON Data:', jsonData); // Log to verify structure
-
-    // const stations = computeStationTraffic(jsonData.data.stations, trips);
-    // console.log('Stations Array:', stations);
-
   } catch (error) {
     console.error('Error loading JSON:', error); // Handle errors
   }
@@ -156,21 +152,16 @@ map.on('load', async () => {
     .enter()
     .append('circle')
     .attr('r', d => radiusScale(d.totalTraffic))
-    .attr('fill', 'steelblue') // Circle fill color
     .attr('stroke', 'white') // Circle border color
     .attr('stroke-width', 1) // Circle border thickness
-    .attr('fill-opacity', 0.6)
+    .attr('opacity', 0.7)
     .attr('pointer-events', 'auto')
-    .each(function (d) {
-      d3.select(this)
-        .append("title")
-        .text(
-          `${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`
-        );
-      })
     .style('--departure-ratio', (d) =>
       stationFlow(d.departures / d.totalTraffic)
     );
+
+  circles.append("title")
+    .text(d => `${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`);
 
   // Function to update circle positions when the map moves/zooms
   function updatePositions() {
@@ -218,7 +209,7 @@ map.on('load', async () => {
       .join('circle')
       .attr('r', (d) => radiusScale(d.totalTraffic))
       .style('--departure-ratio', (d) =>
-        stationFlow(d.departures / d.totalTraffic));
+        d.totalTraffic === 0 ? 0.5 : stationFlow(d.departures / d.totalTraffic));
     
     updatePositions();
   }
